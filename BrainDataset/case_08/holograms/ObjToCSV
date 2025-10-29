@@ -1,0 +1,39 @@
+import bpy, bmesh, csv, os
+
+# Preferred output: next to the .blend if saved, else Desktop
+def default_out(name):
+    try:
+        base = bpy.path.abspath("//")
+        if not os.path.isdir(base):
+            raise RuntimeError
+    except Exception:
+        base = os.path.join(os.path.expanduser("~"), "Desktop")
+    return os.path.join(base, name)
+
+output_csv = default_out("marker_points.csv")
+
+obj = bpy.context.active_object
+if obj is None or obj.type != 'MESH' or bpy.context.mode != 'EDIT_MESH':
+    raise RuntimeError("Select the mesh and enter Edit Mode (vertex select) before running.")
+
+bm = bmesh.from_edit_mesh(obj.data)
+sel = [v for v in bm.verts if v.select]
+if not sel:
+    raise RuntimeError("No vertices selected. Ctrl+Click the tip vertex of each marker.")
+
+rows = []
+for i, v in enumerate(sel, 1):
+    co_world = obj.matrix_world @ v.co
+    rows.append([f"M{i}", float(co_world.x), float(co_world.y), float(co_world.z)])
+
+try:
+    os.makedirs(os.path.dirname(output_csv), exist_ok=True)
+    with open(output_csv, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f); w.writerow(["id","x","y","z"]); w.writerows(rows)
+    print(f"✅ Wrote {len(rows)} marker vertices to: {output_csv}")
+except PermissionError:
+    fallback = os.path.join(os.path.expanduser("~"), "Desktop", "marker_points.csv")
+    with open(fallback, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f); w.writerow(["id","x","y","z"]); w.writerows(rows)
+    print(f"⚠️ Permission issue. Wrote to Desktop instead: {fallback}")
+
