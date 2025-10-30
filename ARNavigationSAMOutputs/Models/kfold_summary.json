@@ -1,0 +1,11 @@
+{
+  "best_overall": {
+    "fold": 5,
+    "val_loss": 0.04339641894242077,
+    "ckpt_path": "/content/drive/MyDrive/ARNavigationSAMOutputs/Models/tumour_sam_maskdec_fold5.pth",
+    "epoch": 2
+  },
+  "kfold": 5,
+  "epochs": 2,
+  "threshold": 0.65
+}

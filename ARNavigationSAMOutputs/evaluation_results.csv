@@ -1,0 +1,16 @@
+case,dice3d,hd95_3d_px,vox_pred,vox_gt,path
+case_07,0.5482787032093979,36.345563690772494,85247,54328,/content/drive/MyDrive/ARNavigation/case_07
+case_04,0.4379555120004118,23.430749027719962,35711,27542,/content/drive/MyDrive/ARNavigation/case_04
+case_03,0.422854121110909,20.42057785666214,27151,14452,/content/drive/MyDrive/ARNavigation/case_03
+case_11,0.42238172581220823,13.379088160259652,8510,10577,/content/drive/MyDrive/ARNavigation/case_11
+case_01,0.4146341464101038,11.224972160321824,3084,5444,/content/drive/MyDrive/ARNavigation/case_01
+case_08,0.3705468500260546,17.08800749063506,42487,20053,/content/drive/MyDrive/ARNavigation/case_08
+case_06,0.36945661127048784,26.30589287593181,149224,110590,/content/drive/MyDrive/ARNavigation/case_06
+case_09,0.3008491713300246,12.083045973594572,992,1481,/content/drive/MyDrive/ARNavigation/case_09
+case_14,0.29175120693404105,11.063431212876107,5293,9000,/content/drive/MyDrive/ARNavigation/case_14
+case_15,0.2838222872990166,25.059928172283335,44777,44018,/content/drive/MyDrive/ARNavigation/case_15
+case_10,0.21586931162817294,18.05547008526779,4989,5295,/content/drive/MyDrive/ARNavigation/case_10
+case_02,0.20098135442571516,10.153698687214971,894,4201,/content/drive/MyDrive/ARNavigation/case_02
+case_05,0.11181721522435605,34.07345007480164,23483,16958,/content/drive/MyDrive/ARNavigation/case_05
+case_13,0.0003106073924040057,25.180349109662338,2923,3516,/content/drive/MyDrive/ARNavigation/case_13
+case_12,3.945707070551384e-11,39.05124837953327,3680,21664,/content/drive/MyDrive/ARNavigation/case_12
