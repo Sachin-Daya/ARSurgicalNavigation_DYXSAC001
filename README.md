@@ -1,22 +1,22 @@
-# SurgNav-AR
 # Augmented Reality in Surgical Navigation of Brain Lesions
 ### Using Segment Anything Model (SAM) and OpenCV
 
-[cite_start]A final year undergraduate project (EEE4022S) by **Sachin Daya** (DYXSAC001) submitted to the Department of Electrical Engineering at the University of Cape Town[cite: 7, 10, 11].
+A final year undergraduate project (EEE4022S) by **Sachin Daya** (DYXSAC001) submitted to the Department of Electrical Engineering at the University of Cape Town.
 
-[cite_start]**Supervisor:** Fred Nicolls [cite: 9]
+**Supervisor:** Fred Nicolls
 
 ---
 
 ## 🚀 Project Overview
 
-[cite_start]This project designs, implements, and evaluates a two-part proof-of-concept pipeline for AR-assisted neurosurgical navigation[cite: 114]. The system addresses two primary bottlenecks in the field: 
-1.  [cite_start]**Segmentation Inefficiency:** The time-consuming and variable nature of manually creating 3D models from preoperative scans[cite: 105].
-2.  [cite_start]**Registration Accuracy:** The difficulty of accurately aligning the virtual 3D models with the physical patient's anatomy[cite: 107].
+This project presents a proof-of-concept pipeline for Augmented Reality (AR) in surgical navigation, designed to address two major challenges in the field: inefficient 3D model creation and inaccurate virtual-to-physical registration.
 
-The pipeline is structured as follows:
-1.  [cite_start]**Part 1 (Segmentation):** A fine-tuned Segment Anything Model (SAM) is used to automatically segment brain lesions from preoperative MRI scans[cite: 116].
-2.  [cite_start]**Part 2 (AR Overlay):** An OpenCV-based, marker-driven AR system overlays the generated 3D lesion model onto a corresponding physical 3D-printed head phantom[cite: 117].
+The pipeline is divided into two main components:
+1.  **Automated Segmentation:** This part investigates the use of a fine-tuned Segment Anything Model (SAM) for automatically segmenting brain lesions from preoperative MRI data. The mask decoder of a pre-trained SAM was fine-tuned on 15 MRI cases, demonstrating an efficient method for generating 3D models.
+2.  **Marker-Based AR Overlay:** This part develops an AR system using OpenCV and ArUco markers. The system overlays the 3D lesion models onto a physical 3D-printed head phantom, allowing for visualization in a real-world context.
+
+The project successfully demonstrates the feasibility of this combined approach. The segmentation component achieved promising accuracy, with a median 3D Dice score of 82.66%. The AR component showed that while initial marker-based registration was inaccurate (RMSE > 100 pixels), manual refinement controls allowed users to achieve a precise final alignment with an average error of 5.0587 pixels.
+
 
 
 ---
@@ -25,27 +25,27 @@ The pipeline is structured as follows:
 
 ### 🧠 Part 1: 3D Lesion Segmentation (SAM)
 
-* [cite_start]**Objective:** To investigate the feasibility of using a fine-tuned foundation model (SAM) for efficient and accurate brain lesion segmentation[cite: 116].
-* [cite_start]**Model:** `sam-vit-base` [cite: 477]
-* [cite_start]**Methodology:** The mask decoder of a pre-trained SAM was fine-tuned on 15 MRI cases from a public neurosurgical dataset[cite: 47, 122, 378]. [cite_start]Bounding-box prompts, generated from the ground-truth masks, were used for training[cite: 122, 542].
+* **Objective:** To investigate the feasibility of using a fine-tuned foundation model (SAM) for efficient and accurate brain lesion segmentation.
+* **Model:** `sam-vit-base`
+* **Methodology:** The mask decoder of a pre-trained SAM was fine-tuned on 15 MRI cases from a public neurosurgical dataset. Bounding-box prompts, generated from the ground-truth masks, were used for training.
 * **Key Script:** `ARNavigationSAMTraining.ipynb`
-* [cite_start]**Result:** The model showed promising efficiency, achieving a **median 3D Dice score of 82.66%** and a **median Average Symmetric Surface Distance (ASSD) of 1.49 mm** after only 2 epochs of training[cite: 50, 1191, 1192].
+* **Result:** The model showed promising efficiency, achieving a **median 3D Dice score of 82.66%** and a **median Average Symmetric Surface Distance (ASSD) of 1.49 mm** after only 2 epochs of training.
 
 ### 👻 Part 2: Augmented Reality Overlay (OpenCV)
 
-* [cite_start]**Objective:** To develop and evaluate a marker-based AR system to visualize the 3D models on a physical phantom[cite: 117].
-* **Methodology:** An ArUco marker-based system developed in OpenCV. [cite_start]The system detects a marker [cite: 117] [cite_start]to establish an initial 6-DoF pose and then renders the 3D models (`skull.obj`, `lesion.obj`) onto the camera's view of a physical 3D-printed phantom[cite: 435]. [cite_start]Manual refinement controls were included to improve alignment[cite: 49].
+* **Objective:** To develop and evaluate a marker-based AR system to visualize the 3D models on a physical phantom.
+* **Methodology:** An ArUco marker-based system developed in OpenCV. The system detects a marker to establish an initial 6-DoF pose and then renders the 3D models (`skull.obj`, `lesion.obj`) onto the camera's view of a physical 3D-printed phantom. Manual refinement controls were included to improve alignment.
 * **Key Scripts:** `CameraImageCalibration.py`, `MarkerBasedAROverlay.py`, `ARTargetCalculations.py`
 * **Result:**
-    * [cite_start]ArUco pose estimation was highly precise, with **sub-pixel reprojection error** (avg. < 0.9 px)[cite: 52, 1376].
-    * [cite_start]Initial registration based *only* on the marker was inaccurate (RMSE > 100 pixels)[cite: 53, 1392].
-    * [cite_start]After manual refinement, the final average alignment error was reduced to **5.0587 pixels**[cite: 53, 1434].
+    * ArUco pose estimation was highly precise, with **sub-pixel reprojection error** (avg. < 0.9 px).
+    * Initial registration based *only* on the marker was inaccurate (RMSE > 100 pixels).
+    * After manual refinement, the final average alignment error was reduced to **5.0587 pixels**.
 
 ### **⚠️ Important Note on AR Evaluation**
 
-[cite_start]The 3D-printed phantom was based on `case_08` from the dataset[cite: 787]. [cite_start]The segmentation pipeline's performance on this specific case was poor (Dice3D 57.95%), resulting in a fragmented 3D model[cite: 1278, 1311].
+The 3D-printed phantom was based on `case_08` from the dataset. The segmentation pipeline's performance on this specific case was poor (Dice3D 57.95%), resulting in a fragmented 3D model.
 
-[cite_start]Therefore, to meaningfully evaluate the AR system's *registration* accuracy, the **ground truth lesion model** for `case_08` was used in the AR overlay, not the model predicted by the SAM pipeline [cite: 1346-1352].
+Therefore, to meaningfully evaluate the AR system's *registration* accuracy, the **ground truth lesion model** for `case_08` was used in the AR overlay, not the model predicted by the SAM pipeline.
 
 ---
 
@@ -58,7 +58,7 @@ The pipeline is structured as follows:
 * `GenerateMarker.py`: Script to generate the ArUco markers used.
 * `ARNavigationSAMOutputs/`: Contains sample outputs (3D meshes) from the segmentation pipeline.
 * `ARResults/`: Contains "before" and "after" images from the AR overlay evaluation.
-* [cite_start]`BrainDataset/`: Information on the public dataset used[cite: 5].
+* `BrainDataset/`: Information on the public dataset used.
 * `CalibrationImages15/`: The 15 images used for the final camera calibration.
 * `ArUcoGeneratedMarkers/`: Images of the markers used in the AR setup.
 * `*.obj`: The 3D models (`skull.obj`, `lesion.obj`, `Markers.obj`) used for the AR overlay.
@@ -92,7 +92,7 @@ The pipeline is structured as follows:
 
 ## Acknowledgments
 
-* [cite_start]This work was completed in partial fulfillment of the academic requirements for a Bachelor of Science degree in Electrical and Computer Engineering at the University of Cape Town[cite: 12].
+* This work was completed in partial fulfillment of the academic requirements for a Bachelor of Science degree in Electrical and Computer Engineering at the University of Cape Town.
 * Guidance from supervisor Fred Nicolls.
-* The public dataset: "Head model dataset for mixed reality navigation in neurosurgical interventions for intracranial lesions" by Qi et al. (2024) [cite_start][cite: 5].
+* The public dataset: "Head model dataset for mixed reality navigation in neurosurgical interventions for intracranial lesions" by Qi et al. (2024).
 
